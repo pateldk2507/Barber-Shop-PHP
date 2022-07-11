@@ -130,6 +130,17 @@ function get_appointment_data($date){
   return $result;
 }
 
+function set_new_date($date){
+  include("db.php");
+  $tmp = '[[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]';
+  $sql = "INSERT INTO `availability`(`Available`, `Date`) VALUES ('$tmp','$date')";
+  if(mysqli_query($conn,$sql)){
+    return true;
+  }else {
+    return false;
+  }
+}
+
 function get_user_appointment($date, $user){
   include("db.php");
   $sql = "SELECT * FROM `appointment` where `Date` >= '$date' AND `userID` = '$user' ";

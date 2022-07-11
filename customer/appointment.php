@@ -35,7 +35,9 @@ if (!isset($_SESSION['email'])) {
             var day = ("0" + now.getDate()).slice(-2);
             var month = ("0" + (now.getMonth() + 1)).slice(-2);
             var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
-            console.log(today);
+            document.cookie = "todayDate" + "=" + today + ";";
+
+            // console.log(today);
          
         </script> 
         <style>
@@ -54,33 +56,41 @@ if (!isset($_SESSION['email'])) {
         
             include_once "navbar.php";
             include "../backend/function.php";
-            $_COOKIE['todayDate'] = date("Y-m-d");
+          
             function getData(){
-            $today = $_COOKIE['todayDate'];
-            $app = get_appointment_data($today);
-            $data= mysqli_fetch_assoc($app);
-            $a = $data['Available']; 
-             return $a;
-            }
+        
+             
 
-            getData();
+                if(!isset($_GET['Date'])){
+                    $today = date("Y-m-d");
+                }else{
+                  $today = $_GET['Date'];
+                }
+                $app = get_appointment_data($today);
+              
+                      if(mysqli_num_rows($app)!=1){
+                            if(set_new_date($today)){
+                              $app = get_appointment_data($today);
+                              $data= mysqli_fetch_assoc($app);
+                              $a = $data['Available']; 
+                              return $a;
+                              
+                            }
+                        }else{
+                              $data= mysqli_fetch_assoc($app);
+                              $a = $data['Available']; 
+                              return $a;
+                              
+                        }
+              }
         ?>
 
 <script>
 
 
 
-// document.getElementById("dateSelect").value = today;
   
 </script>
-
-<?php 
-
-$p = "<script>document.writeln(finalArray)</script>";
-
-?>
-
-
    <!-- Appointment Content -->
     <div class="container">
             <h5 class="mt-4">What service you would like to book today?</h5>
@@ -134,7 +144,7 @@ $p = "<script>document.writeln(finalArray)</script>";
   <div class="form-row">
     <div class="form-group col-sm">
       <label for="inputEmail4">Date</label>
-      <input type="date" name="date" class="form-control" oninput="DateChange()"  id="dateSelect">
+      <input type="date" name="date" class="form-control" onchange="DateChange();"   id="dateSelect">
     </div>
 
     <div class="form-group col-sm mt-2">
@@ -174,18 +184,32 @@ $p = "<script>document.writeln(finalArray)</script>";
     </div>
 
 <script>
+  document.getElementById("appDate").value = localStorage.getItem('tempTime');
+  var a = <?php echo getData();?>;
+  console.log(a);
+ 
+  $('#exampleModal').modal('show');
   
   document.getElementById("todayDate").value = today;
-  document.cookie = "todayDate" + "=" + today + ";";
+  document.getElementById("dateSelect").value = "<?php if(isset($_GET['Date'])){ echo $_GET['Date']; }?>";
+
+  
   function DateChange(){
     console.log("heyyyy");
+
     var d = document.getElementById("dateSelect").value;
     document.cookie = "todayDate" + "=" + d + ";";
-    document.getElementById("appDate").value = d;
-     <?php echo getData(); ?>
+    localStorage.setItem('tempTime',d);
+    document.getElementById("appDate").value = localStorage.getItem('tempTime');
+
+    window.location.href = "http://"+location.host+"/finalproject/customer/appointment.php?Date="+d+" ";
+
+    $('#exampleModal').modal('show');
+    a = <?php if(isset($_GET['Date'])){ echo getData();} else{ echo getData();} ?>;
+    console.log(d);
+    console.log(a);
   }
 
-  var a = <?php echo getData(); ?>;
   var timeSlot = ["12:00 PM to 01:00 PM",
                   "01:00 PM to 02:00 PM",                
                   "02:00 PM to 03:00 PM",
@@ -218,7 +242,8 @@ $p = "<script>document.writeln(finalArray)</script>";
   }
 
 function myFunction() {
-  
+  // console.log(Array.isArray(a));
+  console.log(Array.from(a));
   document.getElementById('time').innerText = null;   
 
   var x = document.getElementById("service").value;
@@ -244,8 +269,8 @@ function myFunction() {
   }
 
 }
-    // var today = new Date().toISOString().split('T')[0];
-    // document.getElementById("dateSelect")[0].setAttribute('min', today);
+    // var MinDate = new Date().toISOString().split('T')[0];
+    document.getElementById("dateSelect").setAttribute('min', today);
     
 </script>
 

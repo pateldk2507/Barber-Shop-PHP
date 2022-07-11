@@ -50,11 +50,17 @@
             }else if($imageSize > 1048576){
                 $error = "*image must be less than 1MB";
             }else{
-                $image = uniqid() . $profile_;
+                if($imageSize == 0){
+                    $image = "profile.jpg";
+                }else{
+                    $image = uniqid() . $profile_;
+                }
+                
                 if(reg_new_user($fname, $lname, $email, $contact, md5($p1), $image)){
                     if(move_uploaded_file($tmp_image, "data/images/profile/$image")) {
-                        
-                        $msg= "You are successfully registered. Welcome to our website.";
+                        echo "You are successfully registered. Welcome to our website.";
+                        echo "you will be redirect shortly";
+                        header("refresh:3;url=./index.php");   
                     }
                 }
             }
