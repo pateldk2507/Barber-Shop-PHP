@@ -2,11 +2,6 @@
 
 include_once "db.php";
 
-
-function is_login(){
-
-}
-
 function is_exist_user($email){
     include "db.php";
     $rsEmails = mysqli_query($conn,"Select * from users where Email='$email'");
@@ -16,10 +11,6 @@ function is_exist_user($email){
     }else{
         return false;
     }
-}
-
-function logout(){
-
 }
 
 function login($email,$password){

@@ -25,6 +25,9 @@
                 echo "loging in...";
                 echo "you will be redirect shortly";
                 header("refresh:3;url=../customer"); 
+            }else{
+                echo "emailId or password incorrect! Please try again!";
+                header("refresh:2;url=../index.php");
             }
 
         }else if($_POST['cat'] == 'RegStaff'){

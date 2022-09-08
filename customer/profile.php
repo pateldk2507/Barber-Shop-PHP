@@ -63,9 +63,9 @@ if (!isset($_SESSION['email'])) {
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                 <form action="profile.php" id="profileForm" method="post" enctype="multipart/form-data" autocomplete="off">
                 <img class="rounded-circle mt-5" height="150px" width="100%" id="blah" style="max-width:150px; max-height:150px; border-radius: 50%; overflow:hidden;" src="<?php echo "../data/images/profile/" . $user['Image'] ?>"> <br>
-                <span class="font-weight-bold"><?php echo $user['Fname'] ." ". $user['Lname'] ?></span>
+                <span class="font-weight-bold"><?php echo $user['Fname'] ." ". $user['Lname'] ?></span> <br>
                 <span class="text-black-50"><?php echo $user['Email']; ?></span>
-                <label for="profile" class="btn btn-warning mt-2">Uplode new Image</label>
+                <label for="profile" class="btn btn-warning mt-2">Upload new Image</label>
                 <input type="file" id="profile" name="profile" onchange="readURL(this);"  style="display: none;">
             </div>
            
@@ -85,7 +85,7 @@ if (!isset($_SESSION['email'])) {
                 </div>
                 <div class="row mt-1">
                     <div class="col-md-6"><label class="labels">New Password</label><input type="password" name="p1" class="form-control" placeholder="new password" value=""></div>
-                    <div class="col-md-6"><label class="labels">Conform Password</label><input type="password" name="p2" class="form-control" value="" placeholder="conform password"></div>
+                    <div class="col-md-6"><label class="labels">Confirm Password</label><input type="password" name="p2" class="form-control" value="" placeholder="confirm password"></div>
                 </div>
                 <input type="hidden" name="cat" value="updateUser">
                 <div class="mt-5 text-center">
@@ -160,11 +160,15 @@ if(isset($_POST['submit'])){
         }else if($imageSize > 1048576){
             $error = "*image must be less than 1MB";
         }else{
-            $image = $user['Image'];
+            if($imageSize == 0){
+                $image = $user['Image'];
+            }else{
+                $image = uniqid() . $profile_;
+            }
             if(strlen($p1) == 0){
+                
                 if(update_user_details($fname, $lname, $email, $contact, 0,$image)){
                         $msg= "Your details update successfully!";
-                        
                         echo "<script> document.getElementById('blah').src= ''; </script>";
                         echo "<script> localStorage.setItem('msg', '$msg');  </script>";
                         echo "<script> localStorage.setItem('alert', '$error');  </script>";
@@ -181,18 +185,15 @@ if(isset($_POST['submit'])){
             }else{
                 if(update_user_details($fname, $lname, $email, $contact, md5($p1),$image)){
                     $msg= "Your details update successfully!";
-                        
                     echo "<script> document.getElementById('blah').src= ''; </script>";
                     echo "<script> localStorage.setItem('msg', '$msg');  </script>";
                     echo "<script> localStorage.setItem('alert', '$error');  </script>";
                     $_POST['cat']="";
                     $_POST['submit']="";
                        
-
-
                     if(move_uploaded_file($tmp_image, "../data/images/profile/$image")) {
                         
-                        echo "<script> alert('image not uoloaded'); </script>";
+                        echo "<script> alert('image upload faild'); </script>";
                         
                     }
                 }
