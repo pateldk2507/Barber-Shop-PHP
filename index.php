@@ -58,10 +58,15 @@
                 
                 if(reg_new_user($fname, $lname, $email, $contact, md5($p1), $image)){
                     if(move_uploaded_file($tmp_image, "data/images/profile/$image")) {
-                        echo "You are successfully registered. Welcome to our website.";
+                    
                         echo "you will be redirect shortly";
-                        header("refresh:3;url=./index.php");   
+                        echo "<script> alert('successfully registerd. Please login to continue'); </script>";
+                        // header("refresh:3;url=./index.php");   
                     }
+                    echo "<script> alert('successfully registerd. Please login to continue'); </script>";
+                    echo "You are successfully registered. Welcome to our website.";
+                    // header("refresh:3;url=./index.php");
+
                 }
             }
 
@@ -105,7 +110,7 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <!-- <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script> -->
         <style>
             .form-group{
                 margin-top: 5px;
@@ -198,7 +203,7 @@
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Threads</div>
-                                <div class="portfolio-caption-subheading text-muted">Illustration</div>
+                                <div class="portfolio-caption-subheading text-muted">Starting from $25</div>
                             </div>
                         </div>
                     </div>
@@ -213,7 +218,7 @@
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Explore</div>
-                                <div class="portfolio-caption-subheading text-muted">Graphic Design</div>
+                                <div class="portfolio-caption-subheading text-muted">Starting from $50</div>
                             </div>
                         </div>
                     </div>
@@ -228,7 +233,7 @@
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Finish</div>
-                                <div class="portfolio-caption-subheading text-muted">Identity</div>
+                                <div class="portfolio-caption-subheading text-muted">Starting from $55</div>
                             </div>
                         </div>
                     </div>
@@ -275,7 +280,7 @@
                         </div>
                     </li>
                     <li class="timeline-inverted">
-                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/4.jpg" alt="..." /></div>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/3.jpg" alt="..." /></div>
                         <div class="timeline-panel">
                             <div class="timeline-heading">
                                 <h4>2022</h4>
@@ -615,7 +620,7 @@
                     </div>
                     <div class="col-sm">
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Conform Password</label>
+                            <label for="exampleInputPassword1">Confirm Password</label>
                             <input type="password" class="form-control" name="p2" required id="exampleInputPassword1">
                         </div>
                     </div>
